@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maya's Page</title>
+</head>
+
+<body>
+   <h1>Some Companies for Looking</h1> 
+   <p>companies on the things</p>
+   <p>Would you like to look at companies?</p>
+
+   <script src="../js/luminateExtend.1.6.js"></script>
+   <scrpit type= "text/javascript">
+    var dataString;
+    var goal, totalResults = 0, teamCount = 0;
+    jQuery(function($)){
+        $(function()) {
+            luminateExtend({
+                apiKey: 'ALZADARDA',
+                path: {
+                    nonsecure: 'http://act.alz.org/site/',
+                    secure: 'http://act.alz.org/site/'
+                }
+            });
+            luminateExtend.api.request ({
+                api: 'teamraiser',
+                data: 'dataString',
+                callback: function (data) {
+                    if (data && data.getCompaniesResponse) {
+                        totalResults = data.getCompaniesResponse.totalNumberResults;
+                    }
+                    if (totalResults > 0) {
+                        var comps = luminateExtend.utils.ensureArray(data.getCompaniesResponse.company);
+                        goal = (comps[0].goal * .01);
+                        teamCount = parse(comps[0].teamCount, 10);
+                    }
+                    else {
+                        'method=getCompaniesByInfo&company_id=148209&include_cross_event=true&list_filter_colum=national&event_type=Longest%20Day%202023';
+                        luminateExtend.api.request({
+                            api: 'teamraiser',
+                            data: dataString,
+                            callback: function (data) {
+                                if (data && data.getCompaniesResponse) {
+                                    totalResults = data.getCompaniesResponse.totalNumberResults;
+                                }
+                                if (totalResults > 0) {
+                                    var comps = luminateExtend.utils.ensureArray(data.getCompaniesResponse.company);
+                                    goal = (comps[0].goal * .01);
+                                    teamCount = parse(comps[0].teamCount, 10);
+                                }
+                            }
+                        });
+                    }
+                }
+                
+            });
+
+        }
+    }
+   </scrpit>
+</body>
+</html>
